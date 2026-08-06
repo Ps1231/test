@@ -1,0 +1,187 @@
+FID,SoilSeries,SoilCode,Texture,Order,SubGroup,Centroid_Lon,Centroid_Lat,Depth_cm,Sand_pct,Silt_pct,Clay_pct,OrganicC_pct,pH,EC_dS_m,BulkDensity_g_cm3,FieldCapacity_vv,WiltingPoint_vv,Saturation_vv,PAW_vv,PAW_mm_profile
+0,Bisalahalli,114,Loamy Sand,Entisols,Lithic Ustorthents,76.67847,12.68752,28.0,78.0,10.0,12.0,0.28,5.5,0.01,1.597,0.134,0.072,0.397,0.061,17.2
+1,Chittanahalli,172,Sandy Clay,Alfisols,Typic Rhodustalfs,76.70122,12.5419,69.0,48.4,9.5,42.0,0.6,7.7,0.11,1.493,0.368,0.255,0.437,0.113,77.8
+2,Chittanahalli,172,Sandy Clay,Alfisols,Typic Rhodustalfs,76.70122,12.5419,69.0,47.6,10.2,39.8,0.54,7.68,0.08,1.501,0.354,0.241,0.434,0.113,78.2
+3,Chittanahalli,172,Clay,Alfisols,Typic Rhodustalfs,76.70122,12.5419,69.0,42.8,6.8,47.5,0.48,7.54,0.1,1.447,0.403,0.285,0.454,0.118,81.4
+4,Roppam,616,Sandy Loam,Entisols,Typic Ustifluvents,76.79637,12.67328,145.0,71.3,9.6,19.1,0.41,7.8,0.4,1.601,0.192,0.118,0.396,0.074,107.1
+5,Roppam,616,Sandy Loam,Entisols,Typic Ustifluvents,76.79637,12.67328,145.0,71.3,10.4,18.3,0.75,6.6,0.1,1.57,0.195,0.118,0.408,0.076,110.7
+6,Roppam,616,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.79637,12.67328,145.0,72.2,6.3,21.5,0.26,8.4,0.5,1.617,0.202,0.13,0.39,0.071,103.6
+7,Roppam,616,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.79637,12.67328,145.0,64.6,8.4,27.0,0.41,8.8,0.22,1.592,0.252,0.166,0.399,0.087,125.8
+8,Roppam,616,Sandy Loam,Entisols,Typic Ustifluvents,76.79637,12.67328,145.0,71.7,8.9,19.4,0.29,8.5,0.2,1.612,0.191,0.118,0.392,0.072,104.8
+9,Ballasamudra,54,Sandy Loam,Alfisols,Typic Haplustalfs,76.78169,12.60366,67.0,74.1,7.5,18.0,0.45,6.6,0.12,1.598,0.181,0.112,0.397,0.069,46.2
+10,Ballasamudra,54,Sandy Clay Loam,Alfisols,Typic Haplustalfs,76.78169,12.60366,67.0,59.2,6.2,34.2,0.4,6.0,0.15,1.566,0.306,0.209,0.409,0.097,65.2
+11,Ballasamudra,54,Clay,Alfisols,Typic Haplustalfs,76.78169,12.60366,67.0,38.3,11.2,50.2,0.24,6.4,0.06,1.414,0.421,0.299,0.466,0.121,81.2
+12,Kalkunte,375,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.83922,12.64816,100.0,63.8,10.5,25.8,0.88,6.4,0.13,1.556,0.255,0.164,0.413,0.091,91.0
+13,Kalkunte,375,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.83922,12.64816,100.0,65.5,6.0,28.5,0.59,6.5,0.11,1.582,0.263,0.177,0.403,0.087,86.9
+14,Kalkunte,375,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.83922,12.64816,100.0,61.2,9.2,29.5,0.73,7.3,0.2,1.56,0.278,0.184,0.411,0.095,94.6
+15,Kalkunte,375,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.83922,12.64816,100.0,61.8,9.8,28.5,0.43,7.9,0.19,1.582,0.267,0.175,0.403,0.092,91.8
+16,Hullikere,312,Loamy Sand,Entisols,Typic Ustifluvents,76.77727,12.71009,100.0,85.0,5.8,9.0,0.6,7.24,0.52,1.546,0.11,0.059,0.417,0.051,51.0
+17,Hullikere,312,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.77727,12.71009,100.0,61.0,9.0,29.2,0.75,6.8,0.44,1.558,0.278,0.183,0.412,0.095,95.0
+18,Hullikere,312,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.77727,12.71009,100.0,61.0,12.2,26.5,0.8,6.72,0.59,1.555,0.262,0.167,0.413,0.095,95.1
+19,Hullikere,312,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.77727,12.71009,100.0,65.0,10.0,25.5,0.6,7.19,0.54,1.58,0.246,0.159,0.404,0.087,87.0
+20,Hullikere,312,Loamy Sand,Entisols,Typic Ustifluvents,76.77727,12.71009,100.0,83.0,6.0,10.2,0.4,7.24,0.3,1.574,0.116,0.063,0.406,0.053,53.1
+21,Sankihalli,634,Sandy Loam,Entisols,Lithic Ustorthents,76.85132,12.5498,10.0,65.7,16.3,18.0,0.42,7.0,1.74,1.593,0.197,0.112,0.399,0.085,8.5
+22,Enugadale,205,Loamy Sand,Inceptisols,Typic Haplustepts,76.85269,12.59002,40.0,82.0,7.0,11.0,0.33,6.5,0.06,1.585,0.121,0.067,0.402,0.054,21.7
+23,Enugadale,205,Clay,Inceptisols,Typic Haplustepts,76.85269,12.59002,40.0,42.0,18.0,40.0,0.3,5.7,0.04,1.488,0.36,0.241,0.438,0.119,47.6
+24,Gumballi,243,Sandy Clay Loam,Inceptisols,Lithic Haplargids,77.23939,12.33757,32.0,45.4,18.4,35.0,1.23,6.82,0.05,1.467,0.338,0.219,0.446,0.119,38.1
+25,Gumballi,243,Sandy Clay Loam,Inceptisols,Lithic Haplargids,77.23939,12.33757,32.0,46.2,10.2,41.5,0.45,6.67,0.06,1.491,0.365,0.251,0.437,0.115,36.7
+26,Hanukanahalli,269,Clay,Inceptisols,Typic Haplustepts,76.67584,12.62035,35.0,43.0,14.0,43.0,0.88,7.1,0.2,1.457,0.379,0.261,0.45,0.118,41.3
+27,Hanukanahalli,269,Clay,Inceptisols,Typic Haplustepts,76.67584,12.62035,35.0,39.0,16.0,45.0,0.91,7.4,0.2,1.431,0.392,0.272,0.46,0.12,42.2
+28,Manchalaghatta,502,Sandy Clay Loam,Entisols,Lithic Ustorthents,76.6778,12.69223,23.0,61.0,10.6,28.2,0.43,6.16,0.15,1.581,0.266,0.173,0.403,0.093,21.4
+29,Manchalaghatta,502,Sandy Clay Loam,Entisols,Lithic Ustorthents,76.6778,12.69223,23.0,58.0,8.5,32.5,0.59,6.19,0.12,1.556,0.299,0.2,0.413,0.099,22.8
+30,Aisandra,7,Sandy Clay Loam,Entisols,Lithic Ustorthents,76.73827,12.63454,25.0,17.1,9.2,20.7,0.15,6.4,0.01,1.547,0.308,0.13,0.416,0.179,44.7
+31,Aisandra,7,Sandy Clay Loam,Entisols,Lithic Ustorthents,76.73827,12.63454,25.0,69.0,8.8,22.2,0.01,6.2,0.1,1.633,0.207,0.132,0.384,0.076,18.9
+32,Chikkonahalli,163,Sandy Loam,Inceptisols,Typic Haplustepts,76.9555,12.54469,27.0,70.2,10.1,18.8,0.2,6.65,0.08,1.618,0.188,0.113,0.39,0.074,20.1
+33,Chikkonahalli,163,Loamy Sand,Inceptisols,Typic Haplustepts,76.9555,12.54469,27.0,76.5,14.9,10.2,0.6,6.18,0.16,1.558,0.135,0.067,0.412,0.067,18.1
+34,Chikkonahalli,163,Sandy Loam,Inceptisols,Typic Haplustepts,76.9555,12.54469,27.0,71.3,12.9,15.8,0.6,6.08,0.1,1.577,0.176,0.101,0.405,0.076,20.4
+35,Hanumapura,270,Sandy Loam,Aridisols,Ustic Haplocambids,76.80213,12.60633,36.0,75.9,4.0,20.1,0.16,8.22,0.18,1.627,0.184,0.12,0.386,0.064,23.0
+36,Hanumapura,270,Sandy Clay Loam,Aridisols,Ustic Haplocambids,76.80213,12.60633,36.0,74.2,4.2,21.5,0.08,8.45,0.18,1.633,0.195,0.128,0.384,0.067,24.0
+37,Hanumapura,270,Sandy Clay Loam,Aridisols,Ustic Haplocambids,76.80213,12.60633,36.0,71.5,4.5,24.0,0.04,8.85,0.19,1.633,0.215,0.143,0.384,0.072,25.9
+38,Hutagalli,319,Sandy Loam,Alfisols,Typic Rhodustalfs,76.48291,12.56879,65.0,83.3,4.2,12.2,0.39,6.7,0.14,1.584,0.126,0.074,0.402,0.052,33.7
+39,Hutagalli,319,Sandy Clay,Alfisols,Typic Rhodustalfs,76.48291,12.56879,65.0,53.2,12.2,34.3,0.21,6.6,0.12,1.557,0.312,0.207,0.412,0.105,68.1
+40,Hutagalli,319,Clay,Alfisols,Typic Rhodustalfs,76.48291,12.56879,65.0,41.0,8.2,57.4,0.27,6.7,0.14,1.378,0.463,0.342,0.48,0.122,79.2
+41,Kenchayanadoddi,423,Sandy Clay Loam,Alfisols,Typic Rhodustalfs,77.30645,12.30176,65.0,70.1,2.0,26.0,0.15,6.62,0.18,1.622,0.232,0.156,0.388,0.076,49.3
+42,Kenchayanadoddi,423,Sandy Clay Loam,Alfisols,Typic Rhodustalfs,77.30645,12.30176,65.0,64.2,5.2,29.0,0.09,6.68,0.08,1.609,0.26,0.174,0.393,0.086,56.1
+43,Kenchayanadoddi,423,Sandy Clay Loam,Alfisols,Typic Rhodustalfs,77.30645,12.30176,65.0,60.2,5.2,33.5,0.12,6.67,0.11,1.586,0.296,0.202,0.402,0.094,61.3
+44,Muddapura,531,Sandy Loam,Alfisols,Typic Haplustalfs,76.82336,12.60036,56.0,75.0,10.0,15.0,0.68,6.5,0.43,1.569,0.166,0.097,0.408,0.069,38.7
+45,Muddapura,531,Sandy Clay Loam,Alfisols,Typic Haplustalfs,76.82336,12.60036,56.0,62.5,7.5,30.0,0.52,6.6,0.07,1.577,0.276,0.185,0.405,0.092,51.3
+46,Muddapura,531,Clay Loam,Alfisols,Typic Haplustalfs,76.82336,12.60036,56.0,42.5,22.5,35.0,0.2,6.8,0.11,1.521,0.33,0.211,0.426,0.119,66.7
+47,Srinivasapur,674,Clay,Inceptisols,Aquic Haplustepts,76.62739,12.71305,112.0,35.3,8.6,56.1,1.1,7.6,0.04,1.37,0.45,0.334,0.483,0.116,130.2
+48,Srinivasapur,674,Clay,Inceptisols,Aquic Haplustepts,76.62739,12.71305,112.0,29.8,12.6,57.6,0.7,7.8,0.04,1.328,0.459,0.34,0.499,0.118,132.5
+49,Srinivasapur,674,Clay,Inceptisols,Aquic Haplustepts,76.62739,12.71305,112.0,23.8,13.6,62.6,0.2,8.0,0.04,1.25,0.486,0.368,0.528,0.119,133.2
+50,Vadesamudra,722,Sandy Loam,Inceptisols,Typic Haplustepts,76.74576,12.69891,60.0,68.2,8.5,13.2,0.91,6.66,0.37,1.536,0.176,0.091,0.42,0.085,51.0
+51,Vadesamudra,722,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.74576,12.69891,60.0,64.2,12.2,23.5,0.8,6.59,0.22,1.562,0.239,0.15,0.411,0.089,53.7
+52,Vadesamudra,722,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.74576,12.69891,60.0,63.0,9.0,28.0,0.7,6.78,0.18,1.568,0.266,0.175,0.408,0.091,54.8
+53,Channarayapatna,143,Sandy Loam,Inceptisols,Typic Haplustepts,76.9301,12.37857,160.0,77.0,6.0,17.0,1.4,5.8,0.18,1.516,0.19,0.12,0.428,0.071,112.9
+54,Channarayapatna,143,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.9301,12.37857,160.0,75.0,1.0,24.0,0.4,5.7,0.18,1.613,0.216,0.147,0.391,0.068,109.3
+55,Channarayapatna,143,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.9301,12.37857,160.0,66.0,7.0,27.0,0.4,5.6,0.15,1.596,0.25,0.166,0.398,0.084,135.1
+56,Channarayapatna,143,Sandy Clay,Inceptisols,Typic Haplustepts,76.9301,12.37857,160.0,61.0,2.0,37.0,0.2,6.7,0.15,1.573,0.319,0.223,0.407,0.096,153.4
+57,Bachahalli,41,Sandy Loam,Inceptisols,Typic Haplustepts,76.78899,12.58611,102.0,76.1,5.8,17.5,0.74,7.46,0.36,1.574,0.18,0.113,0.406,0.067,68.7
+58,Bachahalli,41,Sandy Clay,Inceptisols,Typic Haplustepts,76.78899,12.58611,102.0,54.5,3.8,41.8,0.12,6.46,0.22,1.533,0.357,0.251,0.422,0.106,108.3
+59,Bachahalli,41,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.78899,12.58611,102.0,67.2,4.2,28.5,0.17,7.15,0.23,1.612,0.254,0.172,0.392,0.082,83.3
+60,Bachahalli,41,Sandy Clay,Inceptisols,Typic Haplustepts,76.78899,12.58611,102.0,58.0,5.8,36.2,0.43,6.07,0.18,1.555,0.32,0.221,0.413,0.1,101.9
+61,Kestur,425,Sandy Clay Loam,Alfisols,Typic Paleustalfs,77.04995,12.58607,80.0,88.7,4.0,28.0,0.42,6.09,0.08,1.647,0.221,0.171,0.379,0.05,39.8
+62,Kestur,425,Sand,Alfisols,Typic Paleustalfs,77.04995,12.58607,80.0,70.7,2.0,7.8,0.0,5.79,0.1,1.622,0.119,0.043,0.388,0.076,60.9
+63,Kestur,425,Sandy Clay Loam,Alfisols,Typic Paleustalfs,77.04995,12.58607,80.0,66.3,4.8,22.8,0.3,6.0,0.13,1.606,0.221,0.139,0.394,0.082,65.9
+64,Kestur,425,Sandy Clay Loam,Alfisols,Typic Paleustalfs,77.04995,12.58607,80.0,71.7,8.8,28.2,0.22,6.53,0.07,1.619,0.246,0.171,0.389,0.075,59.9
+65,Modur,525,Sandy Clay,Alfisols,Rhodic Paleustalfs,76.72437,12.57129,90.0,57.0,3.8,39.0,0.47,5.95,0.17,1.542,0.34,0.237,0.418,0.103,92.4
+66,Modur,525,Loamy Sand,Alfisols,Rhodic Paleustalfs,76.72437,12.57129,90.0,0.0,3.2,10.0,0.3,6.15,0.23,1.573,0.321,0.074,0.406,0.247,222.4
+67,Modur,525,Sandy Clay,Alfisols,Rhodic Paleustalfs,76.72437,12.57129,90.0,49.6,6.8,43.0,0.23,5.92,0.17,1.505,0.37,0.258,0.432,0.112,100.5
+68,Modur,525,Sandy Clay,Alfisols,Rhodic Paleustalfs,76.72437,12.57129,90.0,51.1,8.8,48.5,0.35,6.09,0.15,1.481,0.405,0.291,0.441,0.113,102.1
+69,Nelsoge,572,Clay,Inceptisols,Aquic Haplustepts,77.02893,12.23488,90.0,23.1,16.2,58.0,0.44,8.55,0.12,1.287,0.461,0.341,0.514,0.12,107.9
+70,Nelsoge,572,Clay,Inceptisols,Aquic Haplustepts,77.02893,12.23488,90.0,40.6,12.0,46.5,0.57,8.13,0.38,1.441,0.399,0.279,0.456,0.119,107.4
+71,Nelsoge,572,Clay,Inceptisols,Aquic Haplustepts,77.02893,12.23488,90.0,43.5,10.5,44.8,0.31,9.43,0.72,1.469,0.386,0.268,0.446,0.117,105.6
+72,Nelsoge,572,Clay,Inceptisols,Aquic Haplustepts,77.02893,12.23488,90.0,46.2,9.0,44.5,0.37,9.64,0.63,1.48,0.383,0.268,0.442,0.115,103.6
+73,Ramapuram,603,Sandy Loam,Alfisols,Typic Haplustalfs,77.26209,12.31015,120.0,73.4,8.7,17.0,0.72,6.52,0.1,1.571,0.182,0.11,0.407,0.072,86.8
+74,Ramapuram,603,Sandy Clay Loam,Alfisols,Typic Haplustalfs,77.26209,12.31015,120.0,59.4,16.5,30.0,0.69,6.51,0.08,1.557,0.284,0.186,0.412,0.097,116.7
+75,Ramapuram,603,Sandy Clay,Alfisols,Typic Haplustalfs,77.26209,12.31015,120.0,46.1,14.8,38.2,0.57,6.5,0.07,1.499,0.348,0.232,0.434,0.115,138.2
+76,Ramapuram,603,Clay,Alfisols,Typic Haplustalfs,77.26209,12.31015,120.0,41.9,9.5,47.8,0.39,6.92,0.07,1.443,0.405,0.286,0.455,0.119,142.4
+77,Sigulahalli,659,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.87017,12.62047,105.0,15.0,10.0,25.0,0.03,8.3,0.13,1.527,0.327,0.153,0.424,0.174,182.9
+78,Sigulahalli,659,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.87017,12.62047,105.0,59.0,13.0,28.0,0.28,8.5,0.09,1.587,0.266,0.17,0.401,0.095,100.0
+79,Sigulahalli,659,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.87017,12.62047,105.0,67.0,11.0,22.0,0.12,8.6,0.06,1.622,0.212,0.132,0.388,0.08,83.8
+80,Sigulahalli,659,Clay,Inceptisols,Typic Haplustepts,76.87017,12.62047,105.0,38.0,17.0,45.0,0.03,8.4,0.12,1.453,0.39,0.268,0.452,0.122,128.2
+81,Bennane,91,Sandy Clay Loam,Inceptisols,Typic Haplustepts,77.25556,12.3293,155.0,65.5,9.0,25.5,1.2,6.48,0.24,1.537,0.256,0.166,0.42,0.09,139.7
+82,Bennane,91,Sandy Clay Loam,Inceptisols,Typic Haplustepts,77.25556,12.3293,155.0,64.2,4.0,21.2,0.1,7.05,0.41,1.621,0.212,0.128,0.388,0.085,131.2
+83,Bennane,91,Sandy Clay Loam,Inceptisols,Typic Haplustepts,77.25556,12.3293,155.0,59.5,10.2,30.2,0.12,6.62,0.28,1.594,0.276,0.182,0.399,0.094,145.9
+84,Bennane,91,Sandy Clay Loam,Inceptisols,Typic Haplustepts,77.25556,12.3293,155.0,67.2,7.0,25.8,0.8,6.62,0.24,1.571,0.247,0.163,0.407,0.085,131.1
+85,Hagare,252,Sandy Loam,Alfisols,Typic Haplustalfs,76.87252,12.52625,109.0,78.0,4.0,18.0,0.65,5.4,0.5,1.585,0.178,0.114,0.402,0.063,68.8
+86,Hagare,252,Sandy Clay Loam,Alfisols,Typic Haplustalfs,76.87252,12.52625,109.0,61.0,6.0,33.0,0.36,6.1,0.25,1.577,0.295,0.201,0.405,0.094,102.6
+87,Hagare,252,Sandy Clay Loam,Alfisols,Typic Haplustalfs,76.87252,12.52625,109.0,60.0,8.0,32.0,0.28,6.5,0.25,1.58,0.289,0.194,0.404,0.095,103.3
+88,Hagare,252,Sandy Clay Loam,Alfisols,Typic Haplustalfs,76.87252,12.52625,109.0,60.0,7.0,33.0,0.62,6.5,0.5,1.56,0.3,0.203,0.411,0.097,105.5
+89,Hagare,252,Clay,Alfisols,Typic Haplustalfs,76.87252,12.52625,109.0,62.0,9.0,29.0,0.28,6.9,0.25,1.592,0.267,0.176,0.399,0.091,98.9
+90,Koppa,440,Sandy Loam,Inceptisols,Typic Haplustepts,76.75339,12.65717,44.0,88.7,5.5,13.8,0.28,6.57,1.6,1.599,0.123,0.082,0.397,0.041,18.0
+91,Koppa,440,Sandy Clay,Inceptisols,Typic Haplustepts,76.75339,12.65717,44.0,52.2,8.8,39.0,0.44,7.57,0.32,1.525,0.344,0.236,0.425,0.108,47.5
+92,Koppa,440,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.75339,12.65717,44.0,71.4,4.0,24.5,0.28,7.08,2.69,1.616,0.223,0.149,0.39,0.074,32.5
+93,Koppa,440,Loamy Sand,Inceptisols,Typic Haplustepts,76.75339,12.65717,44.0,77.9,3.0,8.2,0.36,6.62,0.19,1.573,0.115,0.051,0.406,0.064,28.1
+94,Koppa,440,Loamy Sand,Inceptisols,Typic Haplustepts,76.75339,12.65717,44.0,81.4,7.0,11.5,0.4,6.15,0.19,1.581,0.127,0.071,0.403,0.056,24.5
+95,Sivana Samudra,670,Sandy Clay Loam,Alfisols,Typic Haplustalfs,77.17379,12.28678,115.0,57.2,8.2,34.0,0.72,6.59,0.16,1.543,0.311,0.21,0.418,0.101,116.6
+96,Sivana Samudra,670,Sandy Clay,Alfisols,Typic Haplustalfs,77.17379,12.28678,115.0,49.7,6.2,40.5,0.54,6.4,0.07,1.506,0.357,0.246,0.432,0.111,127.8
+97,Sivana Samudra,670,Sandy Clay,Alfisols,Typic Haplustalfs,77.17379,12.28678,115.0,47.0,7.5,42.8,0.48,6.22,0.09,1.488,0.372,0.258,0.438,0.114,131.2
+98,Sivana Samudra,670,Sandy Clay,Alfisols,Typic Haplustalfs,77.17379,12.28678,115.0,54.2,4.8,38.8,0.6,6.33,0.09,1.527,0.342,0.236,0.424,0.106,121.8
+99,Sivana Samudra,670,Sandy Clay Loam,Alfisols,Typic Haplustalfs,77.17379,12.28678,115.0,50.0,9.8,38.8,0.45,6.2,0.1,1.517,0.345,0.235,0.427,0.11,126.9
+100,Telanuru,698,Clay,Vertisols,Typic Haplusterts,77.13007,12.2459,120.0,25.5,7.5,62.2,0.33,8.33,0.27,1.266,0.484,0.366,0.522,0.118,141.9
+101,Telanuru,698,Clay Loam,Vertisols,Typic Haplusterts,77.13007,12.2459,120.0,31.4,29.5,38.8,0.36,7.96,0.25,1.453,0.365,0.233,0.452,0.132,157.9
+102,Telanuru,698,Clay,Vertisols,Typic Haplusterts,77.13007,12.2459,120.0,17.6,9.5,71.5,0.24,8.6,0.3,1.142,0.523,0.416,0.569,0.107,128.4
+103,Telanuru,698,Clay,Vertisols,Typic Haplusterts,77.13007,12.2459,120.0,17.3,11.8,67.5,0.27,8.39,0.24,1.177,0.504,0.393,0.556,0.11,132.4
+104,Telanuru,698,Clay,Vertisols,Typic Haplusterts,77.13007,12.2459,120.0,20.4,9.5,67.0,0.21,8.31,0.23,1.195,0.505,0.392,0.549,0.114,136.6
+105,Ram Samudra,600,Clay,Alfisols,Typic Haplustalfs,77.14367,12.24777,142.0,44.0,10.2,45.8,0.39,7.6,0.19,1.463,0.392,0.275,0.448,0.117,166.2
+106,Ram Samudra,600,Sandy Clay,Alfisols,Typic Haplustalfs,77.14367,12.24777,142.0,57.4,3.2,38.2,0.57,7.12,0.22,1.542,0.335,0.233,0.418,0.102,144.8
+107,Ram Samudra,600,Sandy Clay,Alfisols,Typic Haplustalfs,77.14367,12.24777,142.0,47.5,15.2,37.2,0.45,7.8,0.22,1.514,0.339,0.226,0.429,0.113,160.7
+108,Ram Samudra,600,Sandy Clay,Alfisols,Typic Haplustalfs,77.14367,12.24777,142.0,52.6,6.2,40.8,0.54,7.5,0.21,1.517,0.356,0.248,0.428,0.108,153.8
+109,Ram Samudra,600,Sandy Clay Loam,Alfisols,Typic Haplustalfs,77.14367,12.24777,142.0,55.1,14.5,28.0,0.24,7.12,0.14,1.581,0.272,0.17,0.403,0.101,144.0
+110,Ram Samudra,600,Sandy Clay,Alfisols,Typic Haplustalfs,77.14367,12.24777,142.0,55.5,6.8,39.8,0.3,7.5,0.15,1.54,0.344,0.24,0.419,0.104,148.1
+111,Besagarahalli,92,Sandy Clay,Inceptisols,Aquic Haplustepts,76.86972,12.57317,103.0,54.2,8.2,37.0,0.29,6.19,0.67,1.546,0.328,0.224,0.416,0.104,107.6
+112,Besagarahalli,92,Sandy Clay Loam,Inceptisols,Aquic Haplustepts,76.86972,12.57317,103.0,70.9,6.0,22.2,1.18,6.26,0.78,1.545,0.227,0.147,0.417,0.08,82.7
+113,Besagarahalli,92,Sandy Clay Loam,Inceptisols,Aquic Haplustepts,76.86972,12.57317,103.0,66.5,5.0,28.5,0.88,6.36,0.42,1.566,0.267,0.18,0.409,0.087,89.7
+114,Besagarahalli,92,Sandy Clay,Inceptisols,Aquic Haplustepts,76.86972,12.57317,103.0,49.3,7.2,42.2,0.22,7.48,0.93,1.508,0.366,0.254,0.431,0.112,115.0
+115,Besagarahalli,92,Sandy Clay,Inceptisols,Aquic Haplustepts,76.86972,12.57317,103.0,51.2,5.0,40.0,0.46,6.88,0.59,1.517,0.352,0.242,0.428,0.109,112.7
+116,Besagarahalli,92,Sandy Clay,Inceptisols,Aquic Haplustepts,76.86972,12.57317,103.0,48.6,8.5,41.2,0.44,7.82,0.58,1.502,0.362,0.249,0.433,0.112,115.7
+117,Gaudagiri,219,Clay,Entisols,Typic Ustorthents,76.75309,12.61309,18.0,45.0,10.8,44.2,1.0,7.4,0.31,1.459,0.385,0.269,0.449,0.116,20.9
+118,Gaudagiri,219,Sandy Clay,Entisols,Typic Ustorthents,76.75309,12.61309,18.0,51.0,9.0,40.0,0.5,7.41,0.32,1.515,0.352,0.243,0.428,0.11,19.7
+119,Ugranahalli,714,Sandy Loam,Alfisols,Typic Rhodustalfs,76.73288,12.68851,58.0,75.7,9.2,15.1,0.49,6.0,1.2,1.588,0.161,0.095,0.401,0.066,38.5
+120,Ugranahalli,714,Sandy Clay Loam,Alfisols,Typic Rhodustalfs,76.73288,12.68851,58.0,58.0,12.4,29.6,0.49,5.3,0.8,1.567,0.28,0.182,0.409,0.098,57.0
+121,Hosakere,301,Sandy Loam,Inceptisols,Typic Haplustepts,76.463,12.78236,83.0,54.0,28.0,18.0,0.33,8.1,0.3,1.59,0.219,0.112,0.4,0.107,88.6
+122,Hosakere,301,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.463,12.78236,83.0,55.0,24.0,21.0,0.42,6.9,0.4,1.579,0.235,0.131,0.404,0.104,86.4
+123,Hosakere,301,Sandy Loam,Inceptisols,Typic Haplustepts,76.463,12.78236,83.0,70.0,19.0,11.0,0.38,7.2,0.5,1.587,0.148,0.069,0.401,0.078,65.0
+124,Kallur,382,Sandy Clay Loam,Alfisols,Typic Haplustalfs,76.54254,12.84616,100.0,59.6,10.4,30.0,0.98,5.49,0.03,1.539,0.288,0.189,0.419,0.099,98.6
+125,Kallur,382,Sandy Loam,Alfisols,Typic Haplustalfs,76.54254,12.84616,100.0,70.0,12.4,17.6,1.22,5.18,0.06,1.523,0.203,0.121,0.425,0.083,82.6
+126,Kallur,382,Sandy Clay,Alfisols,Typic Haplustalfs,76.54254,12.84616,100.0,45.0,18.4,35.6,0.43,5.5,0.02,1.513,0.333,0.216,0.429,0.116,116.5
+127,Kallur,382,Clay Loam,Alfisols,Typic Haplustalfs,76.54254,12.84616,100.0,45.4,9.6,35.0,0.56,5.68,0.02,1.508,0.33,0.214,0.431,0.117,116.5
+128,Nadaboganahalli,547,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.51479,12.75776,105.0,63.0,9.8,25.5,1.1,7.26,0.46,1.537,0.258,0.165,0.42,0.094,98.4
+129,Nadaboganahalli,547,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.51479,12.75776,105.0,66.0,3.2,29.5,0.5,7.12,0.27,1.588,0.267,0.182,0.401,0.086,90.3
+130,Nadaboganahalli,547,Sandy Clay,Inceptisols,Typic Haplustepts,76.51479,12.75776,105.0,54.0,4.2,42.8,1.3,6.91,0.23,1.497,0.372,0.264,0.435,0.108,113.9
+131,Nadaboganahalli,547,Sandy Clay,Inceptisols,Typic Haplustepts,76.51479,12.75776,105.0,48.5,4.8,46.5,0.8,6.42,0.19,1.473,0.395,0.281,0.444,0.114,119.2
+132,Nadaboganahalli,547,Sandy Clay,Inceptisols,Typic Haplustepts,76.51479,12.75776,105.0,48.5,4.8,46.2,1.5,6.54,0.19,1.463,0.396,0.283,0.448,0.113,118.5
+133,Tumbapura,709,Clay Loam,Inceptisols,Fluventic Haplustepts,76.40363,12.72746,140.0,53.6,18.7,27.7,0.1,7.5,0.75,1.589,0.27,0.167,0.4,0.103,144.2
+134,Tumbapura,709,Sandy Loam,Inceptisols,Fluventic Haplustepts,76.40363,12.72746,140.0,72.0,13.0,15.0,0.18,7.4,1.77,1.616,0.161,0.09,0.39,0.071,99.9
+135,Tumbapura,709,Sandy Clay Loam,Inceptisols,Fluventic Haplustepts,76.40363,12.72746,140.0,65.4,13.1,21.5,0.44,7.9,1.52,1.593,0.218,0.133,0.399,0.085,118.9
+136,Tumbapura,709,Sandy Clay Loam,Inceptisols,Fluventic Haplustepts,76.40363,12.72746,140.0,67.1,9.1,23.8,0.14,7.2,0.99,1.619,0.223,0.143,0.389,0.08,112.1
+137,Tumbapura,709,Sandy Clay Loam,Inceptisols,Fluventic Haplustepts,76.40363,12.72746,140.0,69.2,9.8,21.0,0.17,7.1,0.79,1.62,0.203,0.127,0.389,0.076,106.6
+138,Kanivehalli,397,Sandy Clay Loam,Entisols,Lithic Ustorthents,76.77342,12.81723,20.0,54.2,15.3,30.5,0.66,6.25,0.15,1.543,0.294,0.189,0.418,0.105,21.0
+139,Koppali,441,Sandy Loam,Inceptisols,Typic Haplustepts,76.91797,12.36478,58.0,78.7,5.6,15.7,0.26,6.3,0.03,1.611,0.154,0.095,0.392,0.059,34.3
+140,Koppali,441,Sandy Clay,Inceptisols,Typic Haplustepts,76.91797,12.36478,58.0,55.3,7.8,36.9,0.39,6.0,0.02,1.546,0.327,0.224,0.417,0.103,60.0
+141,Koppali,441,Sandy Clay Loam,Inceptisols,Typic Haplustepts,76.91797,12.36478,58.0,64.2,8.7,27.1,0.39,6.0,0.02,1.593,0.253,0.166,0.399,0.087,50.6
+142,Guttapalli,251,Loamy Sand,Inceptisols,Lithic Haplargids,76.53612,12.84486,47.0,85.7,4.4,9.9,0.23,6.4,0.1,1.585,0.105,0.057,0.402,0.047,22.2
+143,Guttapalli,251,Sandy Clay Loam,Inceptisols,Lithic Haplargids,76.53612,12.84486,47.0,67.5,5.4,27.1,0.44,5.6,0.1,1.597,0.249,0.167,0.397,0.082,38.7
+144,Channasandra,144,Loamy Sand,Alfisols,Kanhaplic Rhodustalfs,76.6624,12.85411,146.0,78.1,13.4,8.5,0.53,6.7,0.0,1.556,0.12,0.055,0.413,0.064,94.0
+145,Channasandra,144,Clay,Alfisols,Kanhaplic Rhodustalfs,76.6624,12.85411,146.0,41.2,17.6,41.2,0.46,6.7,0.0,1.472,0.368,0.248,0.444,0.12,174.9
+146,Channasandra,144,Clay,Alfisols,Kanhaplic Rhodustalfs,76.6624,12.85411,146.0,41.0,8.7,50.3,0.88,6.5,0.0,1.422,0.42,0.302,0.464,0.118,171.9
+147,Channasandra,144,Sandy Clay,Alfisols,Kanhaplic Rhodustalfs,76.6624,12.85411,146.0,50.8,10.1,39.1,0.39,6.7,0.0,1.522,0.346,0.237,0.426,0.109,159.7
+148,Channasandra,144,Sandy Clay,Alfisols,Kanhaplic Rhodustalfs,76.6624,12.85411,146.0,57.9,21.9,20.2,0.14,6.7,0.0,1.611,0.219,0.122,0.392,0.097,141.4
+149,Bidare,104,Sandy Loam,Alfisols,Kanhaplic Rhodustalfs,76.83641,12.97742,164.0,77.1,4.2,18.7,0.09,6.6,0.4,1.631,0.172,0.111,0.384,0.061,100.1
+150,Bidare,104,Clay,Alfisols,Kanhaplic Rhodustalfs,76.83641,12.97742,164.0,44.3,10.7,45.0,0.38,6.0,0.3,1.469,0.387,0.27,0.446,0.117,191.4
+151,Bidare,104,Clay,Alfisols,Kanhaplic Rhodustalfs,76.83641,12.97742,164.0,38.8,16.1,45.1,0.16,7.0,0.3,1.452,0.391,0.269,0.452,0.121,199.0
+152,Bidare,104,Clay,Alfisols,Kanhaplic Rhodustalfs,76.83641,12.97742,164.0,44.3,18.8,36.9,0.32,6.3,0.5,1.511,0.34,0.223,0.43,0.117,191.6
+153,Kalkeri,374,Sandy Clay Loam,Alfisols,Typic Haplustalfs,76.86874,12.90126,102.0,50.6,14.0,35.4,0.6,6.04,0.02,1.523,0.326,0.217,0.425,0.11,112.0
+154,Kalkeri,374,Clay,Alfisols,Typic Haplustalfs,76.86874,12.90126,102.0,34.0,24.0,42.0,0.44,6.82,0.02,1.44,0.379,0.252,0.457,0.127,129.1
+155,Kalkeri,374,Clay,Alfisols,Typic Haplustalfs,76.86874,12.90126,102.0,35.4,18.2,46.4,0.56,6.06,0.02,1.418,0.401,0.278,0.465,0.123,125.4
+156,Kalkeri,374,Clay,Alfisols,Typic Haplustalfs,76.86874,12.90126,102.0,40.0,13.8,46.2,0.68,6.05,0.02,1.437,0.397,0.278,0.458,0.12,122.0
+157,Shimsha,644,Sandy Loam,Entisols,Typic Ustifluvents,76.90235,12.84024,140.0,81.5,4.5,14.0,0.48,6.7,0.22,1.586,0.143,0.087,0.402,0.055,77.7
+158,Shimsha,644,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.90235,12.84024,140.0,65.9,13.0,21.1,0.9,7.1,0.2,1.554,0.224,0.137,0.414,0.087,122.3
+159,Shimsha,644,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.90235,12.84024,140.0,52.2,18.6,29.2,0.46,7.0,0.5,1.554,0.287,0.179,0.414,0.107,150.1
+160,Shimsha,644,Sandy Clay Loam,Entisols,Typic Ustifluvents,76.90235,12.84024,140.0,53.1,13.4,33.5,0.55,6.8,0.1,1.54,0.311,0.205,0.419,0.106,148.6
+161,Hampasandra,265,Loamy Sand,Entisols,Lithic Ustorthents,77.0806,12.7464,12.0,86.0,4.0,10.0,0.3,5.3,0.01,1.579,0.106,0.059,0.404,0.047,5.6
+162,Chikkangala,159,Clay,Inceptisols,Typic Haplustepts,77.15169,12.62322,125.0,37.3,8.5,51.5,0.54,7.96,0.18,1.4,0.428,0.307,0.472,0.12,150.4
+163,Chikkangala,159,Clay,Inceptisols,Typic Haplustepts,77.15169,12.62322,125.0,37.1,11.8,47.5,0.45,8.36,0.18,1.422,0.406,0.284,0.463,0.122,152.1
+164,Chikkangala,159,Clay,Inceptisols,Typic Haplustepts,77.15169,12.62322,125.0,38.8,6.5,50.8,0.33,8.91,0.34,1.412,0.423,0.303,0.467,0.121,150.8
+165,Bannihatti,62,Sandy Clay Loam,Alfisols,Typic Rhodustalfs,77.13148,12.5024,115.0,66.8,5.5,26.5,0.51,6.52,0.05,1.591,0.247,0.164,0.4,0.084,96.1
+166,Bannihatti,62,Sandy Clay,Alfisols,Typic Rhodustalfs,77.13148,12.5024,115.0,49.2,5.0,44.0,0.46,6.28,0.05,1.493,0.378,0.265,0.437,0.112,129.3
+167,Bannihatti,62,Sandy Clay,Alfisols,Typic Rhodustalfs,77.13148,12.5024,115.0,55.8,3.2,40.5,0.0,6.34,0.06,1.547,0.346,0.242,0.416,0.104,119.4
+168,Bannihatti,62,Sandy Clay,Alfisols,Typic Rhodustalfs,77.13148,12.5024,115.0,46.3,8.0,44.5,0.27,6.65,0.05,1.482,0.382,0.267,0.441,0.115,132.3
+169,Padadaridoddi,583,Sandy Clay Loam,Inceptisols,Typic Haplustepts,77.29532,12.35836,32.0,72.1,4.2,23.8,0.4,5.15,0.12,1.608,0.219,0.146,0.393,0.073,23.4
+170,Padadaridoddi,583,Sandy Clay,Inceptisols,Typic Haplustepts,77.29532,12.35836,32.0,53.3,9.7,39.0,0.12,5.75,0.12,1.542,0.34,0.234,0.418,0.106,33.9
+171,Chunchinadoddi,179,Sandy Clay,Mollisols,Typic Haplustolls,77.2706,12.3766,82.0,56.0,8.2,35.8,3.0,6.04,0.23,1.425,0.351,0.238,0.462,0.112,92.0
+172,Chunchinadoddi,179,Sandy Clay,Mollisols,Typic Haplustolls,77.2706,12.3766,82.0,57.2,6.5,36.2,0.8,6.3,0.16,1.536,0.326,0.224,0.42,0.102,83.8
+173,Chunchinadoddi,179,Sandy Clay,Mollisols,Typic Haplustolls,77.2706,12.3766,82.0,53.2,4.5,42.2,1.5,6.31,0.17,1.488,0.371,0.262,0.438,0.109,89.6
+174,Bhairanahalli,94,Clay,Entisols,Typic Ustifluvents,77.27464,12.43058,64.0,23.6,26.0,49.2,0.67,6.73,0.21,1.344,0.42,0.292,0.493,0.128,81.7
+175,Bhairanahalli,94,Sandy Clay Loam,Entisols,Typic Ustifluvents,77.27464,12.43058,64.0,65.6,6.5,26.2,0.48,6.96,0.13,1.59,0.247,0.162,0.4,0.085,54.6
+176,Bhairanahalli,94,Clay,Entisols,Typic Ustifluvents,77.27464,12.43058,64.0,21.0,28.0,50.2,0.52,7.01,0.22,1.329,0.426,0.297,0.498,0.128,82.1
+177,Basavanadoddi,70,Sandy Clay Loam,Mollisols,Typic Haplustolls,77.25041,12.36298,88.0,0.0,10.0,30.8,1.4,5.73,0.33,1.272,0.385,0.192,0.52,0.193,170.2
+178,Basavanadoddi,70,Sandy Clay Loam,Mollisols,Typic Haplustolls,77.25041,12.36298,88.0,0.0,10.5,34.8,2.5,5.54,0.19,1.139,0.398,0.216,0.57,0.182,160.5
+179,Basavanadoddi,70,Sandy Clay,Mollisols,Typic Haplustolls,77.25041,12.36298,88.0,0.0,9.5,40.5,0.9,5.64,0.15,1.274,0.405,0.241,0.519,0.164,144.0
+180,Basavanadoddi,70,Sandy Clay Loam,Mollisols,Typic Haplustolls,77.25041,12.36298,88.0,0.0,8.8,33.0,0.7,5.87,0.12,1.342,0.386,0.201,0.494,0.185,162.7
+181,Tyamagondalu,712,Sandy Loam,Alfisols,Kandic Paleustalfs,77.23846,12.49285,160.0,79.3,7.9,12.8,0.5,6.8,0.01,1.579,0.141,0.081,0.404,0.06,96.1
+182,Tyamagondalu,712,Sandy Clay,Alfisols,Kandic Paleustalfs,77.23846,12.49285,160.0,50.6,9.3,40.1,0.46,5.9,0.1,1.514,0.353,0.243,0.429,0.11,176.0
+183,Tyamagondalu,712,Clay,Alfisols,Kandic Paleustalfs,77.23846,12.49285,160.0,42.2,9.8,48.0,0.49,6.5,0.2,1.442,0.406,0.288,0.456,0.118,189.3
+184,Tyamagondalu,712,Sandy Clay,Alfisols,Kandic Paleustalfs,77.23846,12.49285,160.0,46.2,10.5,43.3,0.5,6.1,0.1,1.482,0.376,0.261,0.441,0.115,183.9
+185,Tyamagondalu,712,Clay,Alfisols,Kandic Paleustalfs,77.23846,12.49285,160.0,38.5,11.8,49.7,0.36,6.5,0.09,1.417,0.417,0.297,0.465,0.121,193.1
