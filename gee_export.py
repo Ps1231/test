@@ -15,7 +15,7 @@ import ee
 
 from gee_config import (
     SEASONS, WINDOW_DAYS, WINDOW_MODE,
-    EXPORT_SCALE, EXPORT_CRS, DRIVE_FOLDER, MAX_PIXELS,
+    EXPORT_SCALE, EXPORT_CRS, DRIVE_FOLDER, MAX_PIXELS, AOI_BBOX,
     EXPORT_TILE_ROWS, EXPORT_TILE_COLS,
     ASSET_ROOT,
 )
@@ -36,8 +36,11 @@ def make_windows(start, end, window_days=WINDOW_DAYS):
     """
     from datetime import datetime, timedelta
 
-    d0 = datetime.strptime(start, "%Y-%m-%d")
-    d1 = datetime.strptime(end, "%Y-%m-%d")
+    # SEASONS stores full ISO timestamps ("2023-11-01T00:00:00Z"), so slice
+    # to the date part before parsing. liss3_process.make_windows does the
+    # same — keep these two in sync.
+    d0 = datetime.strptime(start[:10], "%Y-%m-%d")
+    d1 = datetime.strptime(end[:10], "%Y-%m-%d")
 
     windows = []
     i = 0
@@ -152,8 +155,9 @@ def build_season_stack(aoi, season, window_days=WINDOW_DAYS,
         sfx = f"_t{idx + 1:02d}"
 
         if s2 is not None:
-            keep = ["NDVI", "EVI", "NDWI", "NDRE", "LSWI", "SAVI",
-                    "GNDVI", "MSAVI"]
+            # Track B: only the two indices LISS-III can't make.
+            # NDVI/NDWI/LSWI/SAVI/GNDVI/MSAVI come from LISS-III locally.
+            keep = ["NDRE", "EVI"]
             opt = _safe_composite(s2, t0, t1, keep, "median")
             bands.append(
                 opt.select(keep).rename([b + sfx for b in keep])
@@ -213,7 +217,17 @@ def make_export_tiles(aoi, rows=EXPORT_TILE_ROWS, cols=EXPORT_TILE_COLS):
             ])
             tiles.append((f"r{r}c{c}", rect.intersection(aoi, ee.ErrorMargin(1))))
 
-    return tiles
+    # The grid is cut from the AOI's BOUNDING BOX, but the AOI itself is an
+    # irregular district polygon, so corner tiles can fall entirely outside
+    # it. An empty geometry crashes clipToBoundsAndScale with
+    # "The geometry for image clipping must not be empty."
+    # Raising the grid makes this WORSE (more corners). Drop the empties
+    # instead — one round trip for all tiles, not one per tile.
+    areas = ee.List([t[1].area(maxError=1) for t in tiles]).getInfo()
+    kept = [t for t, a in zip(tiles, areas) if a > 0]
+
+    print(f"  tiles: {len(kept)} of {rows * cols} intersect the AOI")
+    return kept
 
 
 # =========================================================
@@ -262,9 +276,12 @@ def export_season_stack(aoi, season, sensors=("s2", "s1", "lst"),
     # band count is known from config — don't force a getInfo() on the
     # full stack, it materialises all 253 bands just to count them
     n_win = len(make_windows(*SEASONS[season], window_days=window_days))
-    # 8 optical (NDVI,EVI,NDWI,NDRE,LSWI,SAVI,GNDVI,MSAVI)
-    # + 6 SAR (VV,VH,VH_VV,RVI,VV_contrast,VV_corr) + 1 LST = 15
-    n_feat = 15
+    # Track B GEE-side feature set:
+    #   2 optical from S2 (NDRE, EVI)
+    # + 6 SAR (VV,VH,VH_VV,RVI,VV_contrast,VV_corr) + 1 LST = 9
+    # The 6 LISS-III optical indices are merged locally afterwards,
+    # bringing the final cube back to 15 features/window.
+    n_feat = 9
     print(f"  windows: {n_win}  (~{n_win * n_feat} bands)")
 
     tasks = []
@@ -277,6 +294,115 @@ def export_season_stack(aoi, season, sensors=("s2", "s1", "lst"),
         tasks.append(export_to_drive(stack, desc, aoi, scale))
 
     return tasks
+
+
+# =========================================================
+# DIRECT-TO-LOCAL STACK EXPORT  (no Drive)
+# =========================================================
+def export_season_stack_local(aoi, season, local_dir,
+                              sensors=("s2", "s1", "lst"),
+                              scale=None, window_days=WINDOW_DAYS,
+                              grid_rows=None, grid_cols=None):
+    """
+    Build the season stack and download it STRAIGHT TO DISK — no Drive.
+
+    Uses ee.Image.getDownloadURL, which has a hard ~48 MB per-request
+    limit, so the AOI is split into a fine grid and each tile is fetched
+    separately into local_dir as:
+        <season>_<mode>_r<R>c<C>.tif
+
+    These are exactly the filenames merge_cube.py expects, so the rest of
+    Track B is unchanged. Static + meteo are NOT affected — they still use
+    the Drive exporters.
+
+    grid_rows/grid_cols: how finely to tile. Defaults scale with the number
+    of bands so each tile stays under the download limit. Bump them up if a
+    tile fails with a 'request too large' / 'user memory limit' error.
+    """
+    import os
+    import time
+    import requests
+
+    os.makedirs(local_dir, exist_ok=True)
+    scale = scale or EXPORT_SCALE["sentinel2"]
+    mode = WINDOW_MODE if window_days == WINDOW_DAYS else "monthly"
+
+    stack = build_season_stack(aoi, season, sensors=sensors,
+                               window_days=window_days)
+
+    n_win = len(make_windows(*SEASONS[season], window_days=window_days))
+    n_bands = n_win * 9   # 9 GEE-side features/window in Track B
+
+    # Pick a tile grid so each tile stays under the ~48 MB getDownloadURL cap.
+    #
+    # The old rule was ceil(sqrt(n_bands / 6)) — band count only. It ignored
+    # AOI area AND scale, so it returned the same grid for a district at 20 m
+    # as for a village at 10 m, and blew the cap by ~5x on Mandya.
+    #
+    # Size the grid from actual pixel count instead:
+    #     bytes ~= (bbox_area / scale^2) * n_bands * BYTES_PER_PX_BAND
+    # BYTES_PER_PX_BAND is calibrated against observed responses (GEE packs
+    # and compresses, so the effective rate is well below float32's 4).
+    # Raise it if tiles still come back over the cap.
+    if grid_rows is None or grid_cols is None:
+        import math
+
+        xmin, ymin, xmax, ymax = AOI_BBOX
+        mid_lat = math.radians((ymin + ymax) / 2.0)
+        w_m = (xmax - xmin) * 111_320.0 * math.cos(mid_lat)
+        h_m = (ymax - ymin) * 110_574.0
+
+        BYTES_PER_PX_BAND = 2.0
+        TARGET_TILE_BYTES = 40 * 1024 * 1024      # margin under the 48 MB cap
+
+        total_px = (w_m / scale) * (h_m / scale)
+        total_bytes = total_px * n_bands * BYTES_PER_PX_BAND
+        n = max(4, int(math.ceil(math.sqrt(total_bytes / TARGET_TILE_BYTES))))
+
+        grid_rows = grid_rows or n
+        grid_cols = grid_cols or n
+        print(f"  auto-grid :: ~{total_bytes / 1e9:.1f} GB total "
+              f"-> {n}x{n} (~{total_bytes / (n * n) / 1e6:.0f} MB/tile)")
+
+    print(f"\nDirect-to-local export {season} @ {scale} m ({mode})")
+    print(f"  {n_win} windows, ~{n_bands} bands, grid {grid_rows}x{grid_cols}")
+    print(f"  -> {local_dir}")
+
+    tiles = make_export_tiles(aoi, rows=grid_rows, cols=grid_cols)
+    written, failed = [], []
+
+    for name, tile in tiles:
+        dest = os.path.join(local_dir, f"{season}_{mode}_{name}.tif")
+        if os.path.exists(dest):
+            print(f"  skip (exists) :: {name}")
+            written.append(dest)
+            continue
+        try:
+            url = stack.getDownloadURL({
+                "region": tile,
+                "scale": scale,
+                "crs": EXPORT_CRS,
+                "format": "GEO_TIFF",
+                "maxPixels": MAX_PIXELS,
+            })
+            r = requests.get(url, stream=True, timeout=600)
+            r.raise_for_status()
+            with open(dest, "wb") as fh:
+                for chunk in r.iter_content(chunk_size=1 << 20):
+                    fh.write(chunk)
+            print(f"  saved :: {name}  ({os.path.getsize(dest)//(1<<20)} MB)")
+            written.append(dest)
+        except Exception as e:
+            print(f"  FAILED :: {name}  ({str(e)[:120]})")
+            print(f"           -> if 'too large', raise grid_rows/grid_cols")
+            failed.append(name)
+        time.sleep(1)   # be gentle on the endpoint
+
+    print(f"\nDone: {len(written)} tiles saved, {len(failed)} failed.")
+    if failed:
+        print(f"  Failed tiles: {failed}")
+        print(f"  Re-run with a finer grid to fix, e.g. grid_rows={grid_rows+2}")
+    return written
 
 
 def export_to_asset(image, asset_id, region, scale, crs=EXPORT_CRS):
@@ -374,4 +500,3 @@ def monitor(tasks, interval=30):
         if st.get("state") == "FAILED":
             print(f"  FAILED {st.get('description')}: "
                   f"{st.get('error_message')}")
-            

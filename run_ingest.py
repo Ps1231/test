@@ -20,7 +20,23 @@ import sys
 
 import gee_collections as gc
 import gee_export as ge
-from gee_config import SEASONS, DEFAULT_SEASON
+from gee_config import SEASONS, DEFAULT_SEASON, AOI_FILE
+
+
+def describe_aoi():
+    """Report which AOI actually loaded.
+
+    The old version printed a hardcoded label, so the log said nothing about
+    which of the two geojson files was in use. Read it from the file.
+    """
+    import json
+    try:
+        with open(AOI_FILE) as f:
+            props = json.load(f)["features"][0]["properties"]
+        return (f"{props.get('districts', '?')} "
+                f"({props.get('area_sq_km', 0):.0f} km2) <- {AOI_FILE.name}")
+    except Exception as exc:
+        return f"{AOI_FILE.name} (could not read properties: {exc})"
 
 
 def cmd_orbits(aoi, season):
@@ -47,20 +63,25 @@ def cmd_meteo(aoi, season):
 
 
 def cmd_stack(aoi, season):
-    tasks = ge.export_season_stack(aoi, season, tiled=True)
-    print(f"\n{len(tasks)} tasks queued. Monitor at "
-          f"https://code.earthengine.google.com/tasks")
-    ge.monitor(tasks, interval=60)
+    # Track B: stack goes STRAIGHT TO LOCAL DISK — no Drive.
+    # (static + meteo still use Drive; they're unchanged.)
+    # Optional 3rd arg overrides the auto grid:
+    #     python run_ingest.py stack rabi_2023_24 16
+    from gee_config import LOCAL_STACK_DIR
+    grid = int(sys.argv[3]) if len(sys.argv) > 3 else None
+    written = ge.export_season_stack_local(aoi, season, str(LOCAL_STACK_DIR),
+                                           grid_rows=grid, grid_cols=grid)
+    print(f"\n{len(written)} stack tiles saved locally to {LOCAL_STACK_DIR}")
+    print("Next: run liss3_process.py, then merge_cube.py")
 
 
 def cmd_monthly(aoi, season):
-    # monthly composites straight from GEE (window_days=30);
+    # monthly composites straight to local disk (window_days=30);
     # files are tagged "monthly" so they never clash with 8-day.
-    tasks = ge.export_season_stack(aoi, season, tiled=True,
-                                   window_days=30)
-    print(f"\n{len(tasks)} tasks queued. Monitor at "
-          f"https://code.earthengine.google.com/tasks")
-    ge.monitor(tasks, interval=60)
+    from gee_config import LOCAL_STACK_DIR
+    written = ge.export_season_stack_local(aoi, season, str(LOCAL_STACK_DIR),
+                                           window_days=30)
+    print(f"\n{len(written)} monthly tiles saved locally to {LOCAL_STACK_DIR}")
 
 
 COMMANDS = {
@@ -88,7 +109,7 @@ def main():
 
     gc.initialize()
     aoi = gc.load_aoi()
-    print(f"AOI loaded :: Mandya + Mysuru")
+    print(f"AOI loaded :: {describe_aoi()}")
 
     COMMANDS[cmd](aoi, season)
 

@@ -22,10 +22,70 @@ ROOT_DIR = Path(__file__).resolve().parent
 DATA_DIR = ROOT_DIR / "data"
 BOUNDARY_DIR = DATA_DIR / "boundaries"
 
-AOI_FILE = BOUNDARY_DIR / "mandya_mysuru_aoi.geojson"
+# ---- AOI --------------------------------------------------------------
+# Two AOIs exist in data/boundaries/. Switching AOI is ONE line — the bbox,
+# area and district list are all read from the file, never retyped.
+#   mandya_aoi.geojson          ~4,945 km2   Mandya only
+#   mandya_mysuru_aoi.geojson  ~11,266 km2   Mandya + Mysuru
+AOI_FILE = BOUNDARY_DIR / "mandya_aoi.geojson"
+
+
+def _read_aoi_meta(path=None):
+    """Derive (bbox, properties) from the AOI geojson itself.
+
+    A hand-typed AOI_BBOX silently goes stale the moment AOI_FILE changes,
+    which is how a Mandya-only run ended up reporting the combined extent.
+    Read it from the same file the pipeline actually loads.
+    """
+    import json
+
+    path = path or AOI_FILE
+    with open(path) as f:
+        gj = json.load(f)
+
+    feats = gj.get("features", [gj])
+    props = feats[0].get("properties", {}) if feats else {}
+
+    xs, ys = [], []
+
+    def walk(node):
+        if node and isinstance(node[0], (int, float)):
+            xs.append(node[0])
+            ys.append(node[1])
+        else:
+            for child in node:
+                walk(child)
+
+    for feat in feats:
+        walk(feat.get("geometry", feat)["coordinates"])
+
+    return [min(xs), min(ys), max(xs), max(ys)], props
+
+
+# AOI bounding box (EPSG:4326) and metadata, derived from AOI_FILE.
+AOI_BBOX, AOI_PROPS = _read_aoi_meta()
+AOI_NAME = AOI_PROPS.get("districts", AOI_FILE.stem)
+AOI_AREA_SQKM = AOI_PROPS.get("area_sq_km")
+
+# Boundary simplification tolerance, METRES. Must stay BELOW the export
+# pixel size (EXPORT_SCALE["sentinel2"]) or the AOI edge moves more than
+# one pixel and district area totals pick up a perimeter bias.
+AOI_SIMPLIFY_M = 10
 
 # Drive folder that every Export task writes into
 DRIVE_FOLDER = "BAH2026_GEE"
+
+# Local folder where the STACK tiles are downloaded. ONLY the stack comes
+# down locally; static + meteo stay on Drive. Track B merges these local
+# stack tiles with the local LISS-III output, so the stack must be on disk.
+# NOT created at import time on purpose — this may be a removable drive,
+# and mkdir here would break every command (even `orbits`) when it is
+# unmounted. export_season_stack_local() does os.makedirs at point of use.
+LOCAL_STACK_DIR = Path("/media/dell/New Volume/PS6/gee_stacks")
+
+# LISS-III (Track B) local paths — previously CLI-only positional args.
+LISS3_RAW_DIR = ROOT_DIR / "liss3_raw"
+LISS3_OUT_DIR = ROOT_DIR / "liss3_out"
 
 # GEE asset root for intermediate stacks (faster to re-sample
 # than re-downloading from Drive)
@@ -44,9 +104,6 @@ CRS_METRIC = "EPSG:32643"
 CRS_GEOGRAPHIC = "EPSG:4326"
 
 EXPORT_CRS = CRS_METRIC
-
-# AOI bounding box (EPSG:4326) from the dissolved district shapefile
-AOI_BBOX = [75.91, 11.74, 77.33, 13.06]
 
 
 # =========================================================
@@ -75,8 +132,6 @@ DEFAULT_SEASON = "rabi_2023_24"
 
 TRAIN_SEASONS = ["rabi_2023_24", "kharif_2024", "rabi_2024_25"]
 TEST_SEASONS = ["kharif_2025"]
-
-DEFAULT_SEASON = "rabi_2023_24"
 
 
 # =========================================================
@@ -110,8 +165,11 @@ EXPORT_SCALE = {
     "lulc":      10,
 }
 
-# Split the AOI into a grid of export tiles so no single
-# Drive task exceeds GEE limits.
+# Split the AOI into a grid of export tiles so no single Drive task
+# exceeds GEE limits.
+# NOTE: these apply to the DRIVE path only. export_season_stack_local()
+# overrides them with ceil(sqrt(n_bands/6)) — changing them here has no
+# effect on `run_ingest.py stack`.
 EXPORT_TILE_ROWS = 3
 EXPORT_TILE_COLS = 3
 

@@ -23,6 +23,7 @@ from gee_config import (
     ERA5_BANDS,
     DW_CROP_CLASSES, DW_NON_CROP_CLASSES,
     GEE_PROJECT,
+    AOI_SIMPLIFY_M,
 )
 
 
@@ -92,17 +93,22 @@ def load_aoi(path=AOI_FILE):
 
     if gj.get("type") == "FeatureCollection":
         geoms = [ee.Geometry(feat["geometry"]) for feat in gj["features"]]
+        # NOTE: do NOT .flatten() the coordinate lists. Flattening promotes
+        # a polygon's inner ring (a hole) to its own outer ring, silently
+        # turning holes into islands. Pass the per-polygon coords as-is.
         geom = ee.Geometry.MultiPolygon(
-            ee.List([g.coordinates() for g in geoms]).flatten()
+            [g.coordinates() for g in geoms]
         ) if len(geoms) > 1 else geoms[0]
     elif gj.get("type") == "Feature":
         geom = ee.Geometry(gj["geometry"])
     else:
         geom = ee.Geometry(gj)
 
-    # simplify slightly — district polygons carry a lot of
-    # vertices and unsimplified geometry slows every filter
-    return geom.simplify(maxError=30)
+    # Simplify slightly — district polygons carry a lot of vertices and
+    # unsimplified geometry slows every filter. maxError is in METRES, so
+    # it must stay below the export pixel size (EXPORT_SCALE["sentinel2"]
+    # = 20 m) or the AOI boundary shifts by more than one pixel.
+    return geom.simplify(maxError=AOI_SIMPLIFY_M)
 
 
 # =========================================================

@@ -4,7 +4,7 @@ BAH 2026 — PS-6 :: data_inventory.csv builder
 =========================================================
 FIRST job, before any export.
 
-Answers: what scenes actually exist over Mandya + Mysuru,
+Answers: what scenes actually exist over Mandya,
 for which dates, at what cloud cover. You cannot plan a
 compositing window without knowing whether that window has
 any usable optical data in it.
