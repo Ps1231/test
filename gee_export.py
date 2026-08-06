@@ -82,9 +82,11 @@ def composite_sar(collection, t0, t1):
     def to_linear(img):
         vv = ee.Image(10).pow(img.select("VV").divide(10))
         vh = ee.Image(10).pow(img.select("VH").divide(10))
+        # texture measures are already derived; average them as-is
         return (
             vv.rename("VV").addBands(vh.rename("VH"))
-            .addBands(img.select(["VH_VV", "RVI"]))
+            .addBands(img.select(["VH_VV", "RVI",
+                                  "VV_contrast", "VV_corr"]))
         )
 
     lin_mean = sub.map(to_linear).mean()
@@ -96,6 +98,8 @@ def composite_sar(collection, t0, t1):
         vv_db, vh_db,
         lin_mean.select("VH_VV"),
         lin_mean.select("RVI"),
+        lin_mean.select("VV_contrast"),
+        lin_mean.select("VV_corr"),
     ])
 
 def _safe_composite(col, t0, t1, band_names, reducer="median"):
@@ -148,14 +152,15 @@ def build_season_stack(aoi, season, window_days=WINDOW_DAYS,
         sfx = f"_t{idx + 1:02d}"
 
         if s2 is not None:
-            keep = ["NDVI", "EVI", "NDWI", "NDRE", "LSWI", "SAVI"]
+            keep = ["NDVI", "EVI", "NDWI", "NDRE", "LSWI", "SAVI",
+                    "GNDVI", "MSAVI"]
             opt = _safe_composite(s2, t0, t1, keep, "median")
             bands.append(
                 opt.select(keep).rename([b + sfx for b in keep])
             )
 
         if s1 is not None:
-            keep = ["VV", "VH", "VH_VV", "RVI"]
+            keep = ["VV", "VH", "VH_VV", "RVI", "VV_contrast", "VV_corr"]
             sar = ee.Image(ee.Algorithms.If(
                 s1.filterDate(t0, t1).size().gt(0),
                 composite_sar(s1, t0, t1),
@@ -235,29 +240,40 @@ def export_to_drive(image, description, region, scale,
 
 
 def export_season_stack(aoi, season, sensors=("s2", "s1", "lst"),
-                        scale=None, tiled=True):
+                        scale=None, tiled=True, window_days=WINDOW_DAYS):
     """
     Export a whole season's composite stack to Drive.
 
     Files land as:
       <season>_<mode>_<tile>.tif   e.g. rabi_2023_24_8day_r0c1.tif
+
+    window_days controls the compositing period:
+      8  -> 8-day composites (default, WINDOW_MODE label)
+      30 -> monthly composites (filenames tagged "monthly")
     """
     scale = scale or EXPORT_SCALE["sentinel2"]
-    stack = build_season_stack(aoi, season, sensors=sensors)
+    stack = build_season_stack(aoi, season, sensors=sensors,
+                               window_days=window_days)
 
-    print(f"\nExporting {season} @ {scale} m ({WINDOW_MODE})")
+    # label the mode so monthly and 8-day files never collide
+    mode = WINDOW_MODE if window_days == WINDOW_DAYS else "monthly"
+
+    print(f"\nExporting {season} @ {scale} m ({mode})")
     # band count is known from config — don't force a getInfo() on the
     # full stack, it materialises all 253 bands just to count them
-    n_win = len(make_windows(*SEASONS[season]))
-    print(f"  windows: {n_win}  (~{n_win * 11} bands)")
+    n_win = len(make_windows(*SEASONS[season], window_days=window_days))
+    # 8 optical (NDVI,EVI,NDWI,NDRE,LSWI,SAVI,GNDVI,MSAVI)
+    # + 6 SAR (VV,VH,VH_VV,RVI,VV_contrast,VV_corr) + 1 LST = 15
+    n_feat = 15
+    print(f"  windows: {n_win}  (~{n_win * n_feat} bands)")
 
     tasks = []
     if tiled:
         for name, tile in make_export_tiles(aoi):
-            desc = f"{season}_{WINDOW_MODE}_{name}"
+            desc = f"{season}_{mode}_{name}"
             tasks.append(export_to_drive(stack, desc, tile, scale))
     else:
-        desc = f"{season}_{WINDOW_MODE}_full"
+        desc = f"{season}_{mode}_full"
         tasks.append(export_to_drive(stack, desc, aoi, scale))
 
     return tasks
@@ -358,3 +374,4 @@ def monitor(tasks, interval=30):
         if st.get("state") == "FAILED":
             print(f"  FAILED {st.get('description')}: "
                   f"{st.get('error_message')}")
+            

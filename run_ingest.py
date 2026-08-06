@@ -53,12 +53,23 @@ def cmd_stack(aoi, season):
     ge.monitor(tasks, interval=60)
 
 
+def cmd_monthly(aoi, season):
+    # monthly composites straight from GEE (window_days=30);
+    # files are tagged "monthly" so they never clash with 8-day.
+    tasks = ge.export_season_stack(aoi, season, tiled=True,
+                                   window_days=30)
+    print(f"\n{len(tasks)} tasks queued. Monitor at "
+          f"https://code.earthengine.google.com/tasks")
+    ge.monitor(tasks, interval=60)
+
+
 COMMANDS = {
     "orbits":    cmd_orbits,
     "inventory": cmd_inventory,
     "static":    cmd_static,
     "meteo":     cmd_meteo,
     "stack":     cmd_stack,
+    "monthly":   cmd_monthly,
 }
 
 

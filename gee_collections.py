@@ -48,10 +48,10 @@ def initialize(project=GEE_PROJECT):
     key_str = os.environ.get("GEE_SERVICE_ACCOUNT_KEY", "").strip()
     if email and key_str:
         key_dict = json.loads(key_str.strip("'\""))
-        # cred = ee.ServiceAccountCredentials(
-        #     email, key_data=json.dumps(key_dict)
-        # )
-        ee.Initialize(project=project)
+        cred = ee.ServiceAccountCredentials(
+            email, key_data=json.dumps(key_dict)
+        )
+        ee.Initialize(cred, project=project)
         print(f"Earth Engine :: service account ({email})")
         return
 
@@ -155,7 +155,22 @@ def sentinel2(aoi, start, end):
             {"N": img.select("B8"), "R": img.select("B4")},
         ).rename("SAVI")
 
-        return img.addBands([ndvi, ndwi, ndre, lswi, evi, savi])
+        # GNDVI — green NDVI, more sensitive to chlorophyll / canopy N.
+        # Uses Green (B3) instead of Red; better at high biomass where
+        # NDVI saturates (e.g. dense sugarcane, mid-season paddy).
+        gndvi = img.normalizedDifference(["B8", "B3"]).rename("GNDVI")
+
+        # MSAVI2 — modified SAVI, self-calibrating soil correction.
+        # Handles bare-soil / early-season pixels better than SAVI
+        # without needing a manual L factor. Standard MSAVI2 form:
+        #   0.5 * (2*NIR + 1 - sqrt((2*NIR+1)^2 - 8*(NIR - Red)))
+        msavi = img.expression(
+            "0.5 * (2*N + 1 - sqrt((2*N + 1)**2 - 8*(N - R)))",
+            {"N": img.select("B8"), "R": img.select("B4")},
+        ).rename("MSAVI")
+
+        return img.addBands([ndvi, ndwi, ndre, lswi, evi, savi,
+                             gndvi, msavi])
 
     return col.map(add_indices)
 
@@ -209,9 +224,24 @@ def sentinel1(aoi, start, end, orbit_pass=S1_ORBIT_PASS,
             vv_lin.add(vh_lin)
         ).rename("RVI")
 
+        # GLCM texture on VV backscatter — captures the spatial
+        # roughness pattern, not just brightness. Crops differ in
+        # canopy structure (flooded paddy = smooth, sugarcane =
+        # rough), so texture adds a discriminator the per-pixel
+        # backscatter alone misses.
+        # glcmTexture needs an integer image; scale dB to int first.
+        vv_int = sm.select("VV").multiply(100).toInt32()
+        glcm = vv_int.glcmTexture(size=3)
+        # keep two of the most informative measures:
+        #   contrast  = local intensity variation (roughness)
+        #   corr      = linear dependency of grey levels (structure)
+        vv_contrast = glcm.select("VV_contrast").rename(
+            "VV_contrast").toFloat()
+        vv_corr = glcm.select("VV_corr").rename("VV_corr").toFloat()
+
         return (
             sm.rename(["VV", "VH"])
-            .addBands([ratio, rvi])
+            .addBands([ratio, rvi, vv_contrast, vv_corr])
             .copyProperties(img, ["system:time_start"])
         )
 
