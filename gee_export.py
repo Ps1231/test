@@ -299,29 +299,83 @@ def export_season_stack(aoi, season, sensors=("s2", "s1", "lst"),
 # =========================================================
 # DIRECT-TO-LOCAL STACK EXPORT  (no Drive)
 # =========================================================
+def _download_region(stack, region, scale, dest):
+    """
+    One getDownloadURL fetch to `dest`.
+    Returns True on success, or the string 'TOO_LARGE' if GEE rejects it
+    for size (so the caller can subdivide). Other errors are raised.
+    """
+    import requests
+    try:
+        url = stack.getDownloadURL({
+            "region": region,
+            "scale": scale,
+            "crs": EXPORT_CRS,
+            "format": "GEO_TIFF",
+            "maxPixels": MAX_PIXELS,
+        })
+    except Exception as e:
+        msg = str(e)
+        if "must be less than or equal to" in msg or "too large" in msg.lower():
+            return "TOO_LARGE"
+        raise
+    r = requests.get(url, stream=True, timeout=1200)
+    if r.status_code >= 400:
+        body = r.text[:200]
+        if "must be less than or equal to" in body or "too large" in body.lower():
+            return "TOO_LARGE"
+        r.raise_for_status()
+    with open(dest, "wb") as fh:
+        for chunk in r.iter_content(chunk_size=1 << 20):
+            fh.write(chunk)
+    return True
+
+
+def _quad_split(region):
+    """Split an ee.Geometry region into 4 quadrants (2x2) by its bounds."""
+    b = region.bounds().coordinates().get(0).getInfo()
+    xs = [p[0] for p in b]
+    ys = [p[1] for p in b]
+    x0, x1 = min(xs), max(xs)
+    y0, y1 = min(ys), max(ys)
+    xm, ym = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+    boxes = [
+        (x0, y0, xm, ym), (xm, y0, x1, ym),
+        (x0, ym, xm, y1), (xm, ym, x1, y1),
+    ]
+    out = []
+    for (a, c, e, f) in boxes:
+        rect = ee.Geometry.Rectangle([a, c, e, f])
+        out.append(rect.intersection(region, ee.ErrorMargin(1)))
+    return out
+
+
 def export_season_stack_local(aoi, season, local_dir,
                               sensors=("s2", "s1", "lst"),
                               scale=None, window_days=WINDOW_DAYS,
-                              grid_rows=None, grid_cols=None):
+                              grid_rows=None, grid_cols=None,
+                              max_depth=5):
     """
     Build the season stack and download it STRAIGHT TO DISK — no Drive.
 
-    Uses ee.Image.getDownloadURL, which has a hard ~48 MB per-request
-    limit, so the AOI is split into a fine grid and each tile is fetched
-    separately into local_dir as:
-        <season>_<mode>_r<R>c<C>.tif
+    getDownloadURL has a hard ~48 MB per-request cap. Rather than trying to
+    guess a grid fine enough (impossible to get right for every AOI/scale —
+    that's why earlier runs kept failing), this starts from a modest grid and
+    AUTO-SUBDIVIDES any tile that comes back too large, recursively splitting
+    it 2x2 until every piece fits. You no longer hand-tune the grid.
 
-    These are exactly the filenames merge_cube.py expects, so the rest of
-    Track B is unchanged. Static + meteo are NOT affected — they still use
-    the Drive exporters.
+    Files land as:
+        <season>_<mode>_r<R>c<C>.tif          top-level tiles
+        <season>_<mode>_r<R>c<C>_s<i>.tif     auto-split sub-tiles
+        ..._s<i>_s<j>.tif                     deeper splits
+    merge_cube.py globs r*c* so every level is picked up automatically.
 
-    grid_rows/grid_cols: how finely to tile. Defaults scale with the number
-    of bands so each tile stays under the download limit. Bump them up if a
-    tile fails with a 'request too large' / 'user memory limit' error.
+    Static + meteo are unaffected — they still use the Drive exporters.
+    Empty corner tiles are skipped; existing files are skipped, so a re-run
+    only fetches what's still missing.
     """
     import os
     import time
-    import requests
 
     os.makedirs(local_dir, exist_ok=True)
     scale = scale or EXPORT_SCALE["sentinel2"]
@@ -333,75 +387,68 @@ def export_season_stack_local(aoi, season, local_dir,
     n_win = len(make_windows(*SEASONS[season], window_days=window_days))
     n_bands = n_win * 9   # 9 GEE-side features/window in Track B
 
-    # Pick a tile grid so each tile stays under the ~48 MB getDownloadURL cap.
-    #
-    # The old rule was ceil(sqrt(n_bands / 6)) — band count only. It ignored
-    # AOI area AND scale, so it returned the same grid for a district at 20 m
-    # as for a village at 10 m, and blew the cap by ~5x on Mandya.
-    #
-    # Size the grid from actual pixel count instead:
-    #     bytes ~= (bbox_area / scale^2) * n_bands * BYTES_PER_PX_BAND
-    # BYTES_PER_PX_BAND is calibrated against observed responses (GEE packs
-    # and compresses, so the effective rate is well below float32's 4).
-    # Raise it if tiles still come back over the cap.
+    # Start grid: deliberately COARSE. The auto-subdivide handles anything
+    # too big, so we avoid starting absurdly fine (hundreds of tiny requests).
     if grid_rows is None or grid_cols is None:
         import math
-
-        xmin, ymin, xmax, ymax = AOI_BBOX
-        mid_lat = math.radians((ymin + ymax) / 2.0)
-        w_m = (xmax - xmin) * 111_320.0 * math.cos(mid_lat)
-        h_m = (ymax - ymin) * 110_574.0
-
-        BYTES_PER_PX_BAND = 2.0
-        TARGET_TILE_BYTES = 40 * 1024 * 1024      # margin under the 48 MB cap
-
-        total_px = (w_m / scale) * (h_m / scale)
-        total_bytes = total_px * n_bands * BYTES_PER_PX_BAND
-        n = max(4, int(math.ceil(math.sqrt(total_bytes / TARGET_TILE_BYTES))))
-
-        grid_rows = grid_rows or n
-        grid_cols = grid_cols or n
-        print(f"  auto-grid :: ~{total_bytes / 1e9:.1f} GB total "
-              f"-> {n}x{n} (~{total_bytes / (n * n) / 1e6:.0f} MB/tile)")
+        start = max(4, int(math.ceil(math.sqrt(n_bands / 6))))
+        grid_rows = grid_rows or start
+        grid_cols = grid_cols or start
 
     print(f"\nDirect-to-local export {season} @ {scale} m ({mode})")
-    print(f"  {n_win} windows, ~{n_bands} bands, grid {grid_rows}x{grid_cols}")
+    print(f"  {n_win} windows, ~{n_bands} bands, start grid {grid_rows}x{grid_cols}")
+    print(f"  (tiles over the ~48 MB cap auto-split until they fit)")
     print(f"  -> {local_dir}")
 
     tiles = make_export_tiles(aoi, rows=grid_rows, cols=grid_cols)
     written, failed = [], []
 
+    def fetch(region, dest, depth):
+        if os.path.exists(dest):
+            print(f"  skip (exists) :: {os.path.basename(dest)}")
+            written.append(dest)
+            return
+        # skip tiles that don't overlap the AOI (empty geometry)
+        try:
+            if region.area(maxError=1).getInfo() <= 0:
+                print(f"  skip (empty)  :: {os.path.basename(dest)}")
+                return
+        except Exception:
+            pass
+        try:
+            res = _download_region(stack, region, scale, dest)
+        except Exception as e:
+            print(f"  FAILED :: {os.path.basename(dest)}  ({str(e)[:100]})")
+            failed.append(dest)
+            return
+
+        if res is True:
+            mb = os.path.getsize(dest) / (1 << 20)
+            print(f"  saved :: {os.path.basename(dest)}  ({mb:.1f} MB)")
+            written.append(dest)
+            return
+
+        # TOO_LARGE -> split into 2x2 and recurse
+        if depth >= max_depth:
+            print(f"  FAILED :: {os.path.basename(dest)} still too large at max depth")
+            failed.append(dest)
+            return
+        print(f"  splitting :: {os.path.basename(dest)} (too large -> 2x2)")
+        base = dest[:-4]   # strip '.tif'
+        for i, sub in enumerate(_quad_split(region)):
+            fetch(sub, f"{base}_s{i}.tif", depth + 1)
+        time.sleep(0.3)
+
     for name, tile in tiles:
         dest = os.path.join(local_dir, f"{season}_{mode}_{name}.tif")
-        if os.path.exists(dest):
-            print(f"  skip (exists) :: {name}")
-            written.append(dest)
-            continue
-        try:
-            url = stack.getDownloadURL({
-                "region": tile,
-                "scale": scale,
-                "crs": EXPORT_CRS,
-                "format": "GEO_TIFF",
-                "maxPixels": MAX_PIXELS,
-            })
-            r = requests.get(url, stream=True, timeout=600)
-            r.raise_for_status()
-            with open(dest, "wb") as fh:
-                for chunk in r.iter_content(chunk_size=1 << 20):
-                    fh.write(chunk)
-            print(f"  saved :: {name}  ({os.path.getsize(dest)//(1<<20)} MB)")
-            written.append(dest)
-        except Exception as e:
-            print(f"  FAILED :: {name}  ({str(e)[:120]})")
-            print(f"           -> if 'too large', raise grid_rows/grid_cols")
-            failed.append(name)
-        time.sleep(1)   # be gentle on the endpoint
+        fetch(tile, dest, depth=0)
+        time.sleep(0.3)
 
-    print(f"\nDone: {len(written)} tiles saved, {len(failed)} failed.")
+    print(f"\nDone: {len(written)} files saved, {len(failed)} failed.")
     if failed:
-        print(f"  Failed tiles: {failed}")
-        print(f"  Re-run with a finer grid to fix, e.g. grid_rows={grid_rows+2}")
+        print(f"  Failed: {[os.path.basename(f) for f in failed]}")
+        print(f"  Re-run the same command to retry just these "
+              f"(existing files are skipped).")
     return written
 
 

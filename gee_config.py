@@ -81,7 +81,7 @@ DRIVE_FOLDER = "BAH2026_GEE"
 # NOT created at import time on purpose — this may be a removable drive,
 # and mkdir here would break every command (even `orbits`) when it is
 # unmounted. export_season_stack_local() does os.makedirs at point of use.
-LOCAL_STACK_DIR = Path("/media/dell/New Volume/PS6/gee_stacks")
+LOCAL_STACK_DIR = Path("/home/dell/tasks/gee_stacks")
 
 # LISS-III (Track B) local paths — previously CLI-only positional args.
 LISS3_RAW_DIR = ROOT_DIR / "liss3_raw"
